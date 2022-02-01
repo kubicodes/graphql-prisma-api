@@ -4,11 +4,11 @@ import PostType from "./types/PostType";
 
 @Resolver()
 export default class PostResolver {
+  prismaClient = new PrismaClient();
+
   @Query(() => [PostType])
   async posts(): Promise<Post[]> {
-    const prismaClient = new PrismaClient();
-
-    const posts = await prismaClient.post.findMany({
+    const posts = await this.prismaClient.post.findMany({
       include: { author: true },
     });
 
