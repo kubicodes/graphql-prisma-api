@@ -18,6 +18,9 @@ export default class PostType {
   @Field(() => UserType)
   author: UserType;
 
+  @Field(() => Int)
+  authorId: number;
+
   @Field(() => String, { nullable: true })
   content?: string;
 }
