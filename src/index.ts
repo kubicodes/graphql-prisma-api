@@ -3,7 +3,8 @@ import cors from "cors";
 import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-import { User } from "./resolvers/User";
+import PostResolver from "./resolvers/Post";
+import UserResolver from "./resolvers/User";
 
 const main = async () => {
   const app = express();
@@ -17,7 +18,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [User],
+      resolvers: [UserResolver, PostResolver],
     }),
   });
 
