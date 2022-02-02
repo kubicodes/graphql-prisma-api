@@ -19,4 +19,5 @@ export default class UserResolver {
       return { errors: [{ message: "Error while fetching users" }] };
     }
   }
+
 }
