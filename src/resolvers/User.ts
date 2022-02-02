@@ -1,17 +1,22 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Query, Resolver } from "type-graphql";
-import UserType from "./types/UserType";
-
+import UserResponse from "./types/UserResponse";
 @Resolver()
 export default class UserResolver {
-  prismaClient = new PrismaClient();
+  prismaClient = new PrismaClient({ log: ["query", "info", "error"] });
 
-  @Query(() => [UserType])
-  async users(): Promise<User[]> {
-    const users = await this.prismaClient.user.findMany({
-      include: { posts: true },
-    });
+  @Query(() => UserResponse)
+  async users(): Promise<UserResponse> {
+    try {
+      const users = await this.prismaClient.user.findMany({
+        include: { posts: true },
+      });
 
-    return users;
+      return { users };
+    } catch (error) {
+      console.error(error.message);
+
+      return { errors: [{ message: "Error while fetching users" }] };
+    }
   }
 }
